@@ -1,11 +1,22 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { IoHome, IoAddCircle, IoTime, IoPeople } from 'react-icons/io5';
 
 export default function Footer() {
   const router = useRouter();
   const pathname = usePathname();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  // ❌ Hide footer if not logged in
+  if (!isLoggedIn) return null;
 
   const tabs = [
     { name: 'Home', path: '/dashboard', icon: IoHome },
