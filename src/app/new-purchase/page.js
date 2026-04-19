@@ -76,7 +76,8 @@ export default function New() {
           min-height: 100vh;
           background: #f4f0ea;
           font-family: 'DM Sans', sans-serif;
-          padding-bottom: 90px;
+         
+          padding-bottom: 150px;
         }
 
         /* ── TOP BAR ── */
@@ -241,7 +242,11 @@ export default function New() {
 
         /* ── STICKY BOTTOM BAR ── */
         .np-bar {
-          position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+          position: fixed;
+          bottom: calc(70px + env(safe-area-inset-bottom));
+          z-index: 40;
+          left: 0;
+          right: 0;
           background: #fff;
           border-top: 1px solid #e2d9ce;
           padding: 11px 14px;
@@ -258,10 +263,10 @@ export default function New() {
         }
         .np-bprev:hover { background: #fff8f7; }
         .np-bsave {
-          flex: 1.4; padding: 12px 8px;
+          flex: 1.4; padding: 10px 6px;
           background: #c0392b; color: #fff;
-          border: none; border-radius: 10px;
-          font-family: 'DM Sans'; font-size: 13px; font-weight: 600;
+          border: none; border-radius: 8px;
+          font-family: 'DM Sans'; font-size: 12px; font-weight: 600;
           cursor: pointer; transition: background .13s, transform .1s;
           display: flex; align-items: center; justify-content: center; gap: 6px;
         }
