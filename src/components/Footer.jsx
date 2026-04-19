@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { IoHome, IoAddCircle, IoTime, IoPeople } from 'react-icons/io5';
 
@@ -8,15 +7,12 @@ export default function Footer() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('token')
+      : null;
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  // ❌ Hide footer if not logged in
-  if (!isLoggedIn) return null;
+  if (!token) return null;
 
   const tabs = [
     { name: 'Home', path: '/dashboard', icon: IoHome },
@@ -39,15 +35,8 @@ export default function Footer() {
               onClick={() => router.push(tab.path)}
               className="flex flex-col items-center"
             >
-              <Icon
-                size={22}
-                color={isActive ? '#ffcc00' : '#aaa'}
-              />
-              <span
-                className={`text-xs ${
-                  isActive ? 'text-[#ffcc00]' : 'text-[#aaa]'
-                }`}
-              >
+              <Icon size={22} color={isActive ? '#ffcc00' : '#aaa'} />
+              <span className={`text-xs ${isActive ? 'text-yellow-400' : 'text-gray-400'}`}>
                 {tab.name}
               </span>
             </button>

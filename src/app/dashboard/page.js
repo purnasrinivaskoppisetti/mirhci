@@ -70,69 +70,87 @@ export default function Home() {
         {/* WEEKLY GRAPH */}
         <h2 className="text-lg font-bold mt-6">Weekly Trends</h2>
 
-        <div className="bg-white p-4 rounded-xl mt-3">
-          {data?.weekly_trends?.map((day, i) => (
-            <div key={i} className="flex items-center mb-2">
-              <div className="w-12 text-xs">
-                {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
-              </div>
+        <div className="bg-white p-4 rounded-xl mt-3 shadow-sm">
+          {(() => {
+            const weekly = data?.weekly_trends || [];
 
-              <div className="flex-1 bg-gray-200 h-2 rounded">
-                <div
-                  className="bg-red-500 h-2 rounded"
-                  style={{
-                    width: `${day.mirchi_kg}px`
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+            const max = Math.max(
+              ...weekly.map(d => (d.mirchi_kg + d.cotton_kg)),
+              1
+            );
+
+            return weekly.map((day, i) => {
+              const total = day.mirchi_kg + day.cotton_kg;
+
+              return (
+                <div key={i} className="mb-3">
+
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>
+                      {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                    </span>
+                    <span className="font-medium">{total} kg</span>
+                  </div>
+
+                  <div className="flex h-2 rounded overflow-hidden bg-gray-200">
+
+                    <div
+                      className="bg-red-500"
+                      style={{ width: `${(day.mirchi_kg / max) * 100}%` }}
+                    />
+
+                    <div
+                      className="bg-green-500"
+                      style={{ width: `${(day.cotton_kg / max) * 100}%` }}
+                    />
+
+                  </div>
+                </div>
+              );
+            });
+          })()}
         </div>
 
         {/* RECENT TRANSACTIONS */}
-        <div className="flex justify-between items-center mt-6">
-          <h2 className="text-lg font-bold">Recent Transactions</h2>
-        </div>
+        <h2 className="text-lg font-bold mt-6">Recent Transactions</h2>
 
-        {transactions.length === 0 ? (
-          <p className="mt-3">No data</p>
-        ) : (
-          transactions.map((item, i) => {
-            const status = item.status?.toLowerCase();
+        {transactions.map((item, i) => {
+          const status = item.status?.toLowerCase();
 
-            const statusColor =
-              status === 'paid'
-                ? 'bg-green-500'
-                : status === 'pending'
-                ? 'bg-red-500'
-                : 'bg-orange-500';
+          const statusColor =
+            status === 'paid'
+              ? 'bg-green-500'
+              : status === 'pending'
+              ? 'bg-red-500'
+              : 'bg-orange-500';
 
-            return (
-              <div
-                key={i}
-                className="bg-white p-4 rounded-xl mt-3 shadow-sm flex justify-between items-center"
-              >
-                <div>
-                  <p className="font-semibold">{item.customer_name}</p>
+          return (
+            <div
+              key={i}
+              className="bg-white p-4 rounded-xl mt-3 shadow-sm flex justify-between items-center"
+            >
+              <div>
+                <p className="font-semibold text-base">
+                  {item.customer_name}
+                </p>
 
-                  <p className="text-sm text-gray-500">
-                    {item.crop} · {item.type || '---'}
-                  </p>
-                </div>
-
-                <div className="text-right">
-                  <p className="font-bold">₹{item.amount}</p>
-
-                  <span
-                    className={`text-white text-xs px-2 py-1 rounded ${statusColor}`}
-                  >
-                    {status}
-                  </span>
-                </div>
+                <p className="text-xs text-gray-500">
+                  {item.crop} · {item.type || 'General'}
+                </p>
               </div>
-            );
-          })
-        )}
+
+              <div className="text-right">
+                <p className="font-bold">₹{item.amount}</p>
+
+                <span
+                  className={`text-white text-xs px-2 py-1 rounded ${statusColor}`}
+                >
+                  {status}
+                </span>
+              </div>
+            </div>
+          );
+        })}
 
       </div>
     </div>
