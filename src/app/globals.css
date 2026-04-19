@@ -1,17 +1,16 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ROOT COLORS */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* DARK MODE */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,8 +18,27 @@
   }
 }
 
+/* BODY */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* INPUT */
+.input {
+  @apply bg-gray-100 p-2 rounded w-full text-sm outline-none focus:ring-2 focus:ring-red-400;
+}
+
+/* BUTTONS */
+.btn-red {
+  @apply bg-red-500 text-white p-3 rounded-lg font-medium active:scale-95 transition;
+}
+
+.btn-gray {
+  @apply bg-gray-200 p-3 rounded-lg font-medium active:scale-95 transition;
+}
+
+.btn-outline {
+  @apply border border-dashed border-gray-400 p-2 w-full text-sm rounded hover:bg-gray-100 transition;
 }

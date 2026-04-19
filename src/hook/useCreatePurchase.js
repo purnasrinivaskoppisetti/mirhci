@@ -15,6 +15,7 @@ export const useNewPurchase = () => {
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
   const [crop, setCrop] = useState('');
+  const [type, setType] = useState(''); // ✅ NEW
   const [price, setPrice] = useState('');
   const [date, setDate] = useState(getTodayDate());
 
@@ -26,11 +27,7 @@ export const useNewPurchase = () => {
     { bag: 'Bag 1', weight: '', netWeight: 0, deduction: 0 },
   ]);
 
-  const [amountPaid, setAmountPaid] = useState('');
-  const [paymentMode, setPaymentMode] = useState('cash');
-  const [notes, setNotes] = useState('');
-
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [preview, setPreview] = useState(null); // ✅ NEW
 
   const getDeduction = (weight) => {
     if (weight >= 1 && weight <= 49) return parseFloat(range1) || 0;
@@ -69,33 +66,60 @@ export const useNewPurchase = () => {
     ]);
   };
 
+  // ✅ PREVIEW API
+  const handlePreview = async () => {
+    const token = getToken();
+    if (!token) return alert('Login again');
+
+    const payload = {
+      customer_name: name,
+      mobile,
+      crop,
+      type,
+      price_per_kg: parseFloat(price) || 0,
+      purchase_date: date,
+      bags: bags.map((b, i) => ({
+        bag_number: i + 1,
+        gross_weight: parseFloat(b.weight) || 0,
+        deduction: b.deduction,
+      })),
+    };
+
+    const res = await fetch(`${BASE_URL}api/purchases/preview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    setPreview(data.data);
+  };
+
+  // ✅ SAVE
   const handleSave = async () => {
     setLoading(true);
 
     try {
       const token = getToken();
-      if (!token) return alert('Login again');
 
       const payload = {
         customer_name: name,
         mobile,
         crop,
-        price_per_kg: parseFloat(price) || 0,
+        type,
+        price_per_kg: parseFloat(price),
         purchase_date: date,
         bags: bags.map((b, i) => ({
           bag_number: i + 1,
-          gross_weight: b.netWeight,
+          gross_weight: parseFloat(b.weight),
           deduction: b.deduction,
         })),
-        payment: {
-          amount_paid: parseFloat(amountPaid) || 0,
-          payment_mode: paymentMode,
-          remarks: '',
-        },
-        notes,
       };
 
-      const res = await fetch(`${BASE_URL}api/purchases/create`, {
+      await fetch(`${BASE_URL}api/purchases/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,21 +128,7 @@ export const useNewPurchase = () => {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message);
-
-      // ✅ SHOW POPUP
-      setShowSuccess(true);
-
-      // ✅ CLEAR FORM
-      setName('');
-      setMobile('');
-      setCrop('');
-      setPrice('');
-      setAmountPaid('');
-      setNotes('');
-      setBags([{ bag: 'Bag 1', weight: '', netWeight: 0, deduction: 0 }]);
-
+      alert('Saved Successfully');
     } catch (err) {
       alert(err.message);
     } finally {
@@ -127,10 +137,10 @@ export const useNewPurchase = () => {
   };
 
   return {
-    loading,
     name, setName,
     mobile, setMobile,
     crop, setCrop,
+    type, setType,
     price, setPrice,
     date, setDate,
     range1, setRange1,
@@ -139,10 +149,9 @@ export const useNewPurchase = () => {
     bags,
     handleWeightChange,
     addBag,
-    amountPaid, setAmountPaid,
-    paymentMode, setPaymentMode,
-    notes, setNotes,
+    handlePreview,
+    preview,
     handleSave,
-    showSuccess, setShowSuccess,
+    loading
   };
 };
