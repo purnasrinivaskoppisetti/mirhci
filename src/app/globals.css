@@ -42,3 +42,25 @@ body {
 .btn-outline {
   @apply border border-dashed border-gray-400 p-2 w-full text-sm rounded hover:bg-gray-100 transition;
 }
+
+.np-bar-inner {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2d9ce;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.np-bprev {
+  flex: 1;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.np-bsave {
+  flex: 1.2;
+  padding: 10px;
+  font-size: 12px;
+}

@@ -22,7 +22,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#111] border-t border-gray-800 z-50">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-[#111] z-50">
       <div className="max-w-md mx-auto flex justify-around py-2">
 
         {tabs.map((tab, i) => {

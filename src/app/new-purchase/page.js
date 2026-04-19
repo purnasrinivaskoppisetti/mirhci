@@ -244,14 +244,21 @@ export default function New() {
         .np-bar {
           position: fixed;
           bottom: calc(70px + env(safe-area-inset-bottom));
-          z-index: 40;
-          left: 0;
-          right: 0;
-          background: #fff;
+         
+          
+         
           border-top: 1px solid #e2d9ce;
           padding: 11px 14px;
           padding-bottom: max(11px, env(safe-area-inset-bottom));
           display: flex; gap: 10px;
+          left: 50%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+          max-width: 430px; /* same as your layout */
+          z-index: 40;
+          background: #f4f0ea;
+          padding: 10px 12px;
         }
         .np-bprev {
           flex: 1; padding: 12px 8px;
