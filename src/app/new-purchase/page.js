@@ -76,23 +76,26 @@ export default function New() {
           min-height: 100vh;
           background: #f4f0ea;
           font-family: 'DM Sans', sans-serif;
-         
           padding-bottom: 150px;
         }
 
-        /* ── TOP BAR ── */
+        /* ── TOP BAR (CREAM COLOR) ── */
         .np-top {
           position: sticky; top: 0; z-index: 40;
-          background: #1c1108;
+          background: #F9F3E6;  /* cream color */
           padding: 11px 16px;
           display: flex; align-items: center; justify-content: space-between;
           gap: 12px;
+          border-bottom: 1px solid #e8ddd0;
         }
         .np-top-title h1 {
           font-family: 'Playfair Display', serif;
-          font-size: 15px; font-weight: 700; color: #fff; margin: 0;
+          font-size: 15px; font-weight: 700; color: #2c1a0c; margin: 0;
         }
-        .np-top-title p { font-size: 11px; color: #8a7258; margin: 1px 0 0; }
+        .np-top-title p { 
+          font-size: 11px; color: #b28b6f; margin: 1px 0 0; 
+          display: none; /* hide bag-by-bag text */
+        }
         .np-pill {
           background: #c0392b; border-radius: 22px;
           padding: 7px 14px; text-align: right; flex-shrink: 0;
@@ -240,45 +243,61 @@ export default function New() {
         .np-mbtn .mico { font-size: 18px; display: block; margin-bottom: 2px; }
         .np-mbtn.active { border-color: #c0392b; background: #fff0ef; color: #c0392b; font-weight: 600; }
 
-        /* ── STICKY BOTTOM BAR ── */
+        /* ── UPDATED BOTTOM BAR (smaller buttons) ── */
         .np-bar {
           position: fixed;
           bottom: calc(70px + env(safe-area-inset-bottom));
-         
-          
-         
           border-top: 1px solid #e2d9ce;
-          padding: 11px 14px;
+          padding: 8px 14px;
           padding-bottom: max(11px, env(safe-area-inset-bottom));
-          display: flex; gap: 10px;
-          left: 50%;
+          display: flex;
+          gap: 12px;
           left: 50%;
           transform: translateX(-50%);
           width: 100%;
-          max-width: 430px; /* same as your layout */
+          max-width: 430px;
           z-index: 40;
           background: #f4f0ea;
-          padding: 10px 12px;
         }
         .np-bprev {
-          flex: 1; padding: 12px 8px;
-          border: 1.5px solid #c0392b; border-radius: 10px;
-          background: #fff; color: #c0392b;
-          font-family: 'DM Sans'; font-size: 13px; font-weight: 600;
-          cursor: pointer; transition: background .13s;
-          display: flex; align-items: center; justify-content: center; gap: 6px;
+          flex: 1;
+          padding: 8px 8px;
+          border: 1.5px solid #c0392b;
+          border-radius: 40px;
+          background: #fff;
+          color: #c0392b;
+          font-family: 'DM Sans';
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all .2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
-        .np-bprev:hover { background: #fff8f7; }
+        .np-bprev:hover { background: #fff8f7; transform: scale(0.97); }
         .np-bsave {
-          flex: 1.4; padding: 10px 6px;
-          background: #c0392b; color: #fff;
-          border: none; border-radius: 8px;
-          font-family: 'DM Sans'; font-size: 12px; font-weight: 600;
-          cursor: pointer; transition: background .13s, transform .1s;
-          display: flex; align-items: center; justify-content: center; gap: 6px;
+          flex: 1;
+          padding: 8px 8px;
+          background: #c0392b;
+          color: #fff;
+          border: none;
+          border-radius: 40px;
+          font-family: 'DM Sans';
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all .2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          box-shadow: 0 2px 6px rgba(192,57,43,0.25);
         }
-        .np-bsave:hover { background: #a93226; }
-        .np-bsave:active { transform: scale(0.98); }
+        .np-bsave:hover { background: #a93226; transform: scale(0.97); }
+        .np-bprev:active, .np-bsave:active { transform: scale(0.96); }
         .np-bprev:disabled, .np-bsave:disabled { opacity: 0.5; pointer-events: none; }
 
         /* spinner */
@@ -292,7 +311,7 @@ export default function New() {
         @keyframes rotating { to { transform: rotate(360deg); } }
 
         /* ═══════════════════════════════════
-           BILL PREVIEW
+           BILL PREVIEW (unchanged)
         ═══════════════════════════════════ */
         .np-bill {
           margin: 14px 12px 0;
@@ -302,7 +321,6 @@ export default function New() {
           overflow: hidden;
         }
 
-        /* Jai Shree Ram banner */
         .jsr {
           background: #c0392b;
           padding: 9px 16px;
@@ -449,11 +467,11 @@ export default function New() {
 
       <div className="np">
 
-        {/* ── STICKY TOP BAR WITH RUNNING TOTAL ── */}
+        {/* ── STICKY TOP BAR WITH CREAM COLOR & HIDDEN SUBTEXT ── */}
         <div className="np-top">
           <div className="np-top-title">
             <h1>New Purchase</h1>
-            <p>Bag-by-bag entry</p>
+            <p>Bag-by-bag entry</p> {/* This text is hidden via CSS display:none */}
           </div>
           <div className="np-pill">
             <div className="pl">Total Bill</div>
@@ -616,14 +634,12 @@ export default function New() {
         {showBill && preview && (
           <div id="bill-section" className="np-bill">
 
-            {/* Jai Shree Ram */}
             <div className="jsr">
               <div className="jsr-line" />
               <span>🙏  Jai Shree Ram  🙏</span>
               <div className="jsr-line" />
             </div>
 
-            {/* Header */}
             <div className="bill-head">
               <div className="bill-brand">
                 <div className="bill-logo">🌶️</div>
@@ -638,7 +654,6 @@ export default function New() {
               </div>
             </div>
 
-            {/* Customer */}
             <div className="bill-cust">
               <div>
                 <div className="bill-cname">{name || '—'}</div>
@@ -649,7 +664,6 @@ export default function New() {
               </div>
             </div>
 
-            {/* Meta grid */}
             <div className="bill-meta">
               {[
                 {k:'Crop',           v:`${preview.crop}`},
@@ -668,7 +682,6 @@ export default function New() {
               ))}
             </div>
 
-            {/* Bag table */}
             <div className="bill-tbl-label">Bag-wise Details</div>
             <div className="bill-tbl-wrap">
               <table className="bill-tbl">
@@ -701,13 +714,11 @@ export default function New() {
               </table>
             </div>
 
-            {/* Total amount */}
             <div className="bill-total">
               <span className="btl">Total Amount</span>
               <span className="btv">₹{fmt(preview.totals?.amount)}</span>
             </div>
 
-            {/* Paid / Pending */}
             <div className="bill-pp">
               <div className="bill-pp-box pp-paid">
                 <div className="ppk">Paid</div>
@@ -719,7 +730,6 @@ export default function New() {
               </div>
             </div>
 
-            {/* Payment history */}
             {(preview.paid || 0) > 0 && (
               <div className="bill-hist">
                 <div className="bill-hist-hd">
@@ -745,7 +755,7 @@ export default function New() {
           </div>
         )}
 
-        {/* ── BOTTOM ACTION BAR ── */}
+        {/* ── BOTTOM ACTION BAR (UPDATED: smaller, rounded, smoother) ── */}
         <div className="np-bar">
           <button className="np-bprev" onClick={onPreview} disabled={previewLoading || saveLoading}>
             {previewLoading
