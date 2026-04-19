@@ -1,34 +1,52 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Header() {
   const router = useRouter();
 
   const handleLogout = () => {
-    // ✅ remove token
     localStorage.removeItem('token');
-
-    // ✅ redirect
-    router.replace('/'); // change if needed
+    router.replace('/');
   };
 
   return (
-    <div className="bg-red-700 text-white py-3 px-4 flex justify-between items-center">
+    <header className="bg-red-700 text-white shadow-md">
 
-      {/* TITLE */}
-      <h1 className="font-bold text-lg">
-        Jai Sriram
-      </h1>
+      <div className="flex items-center justify-between px-3 sm:px-5 py-2.5">
 
-      {/* LOGOUT */}
-      <button
-        onClick={handleLogout}
-        className="text-sm bg-white/20 px-3 py-1 rounded-md"
-      >
-        Logout
-      </button>
+        {/* LEFT: LOGO + TITLE */}
+        <div
+          onClick={() => router.push('/dashboard')}
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer"
+        >
+          {/* LOGO */}
+          <Image
+            src="/logo.png"   // 👉 put your logo in /public/logo.png
+            alt="Mirchi Mart"
+            width={40}
+            height={40}
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
+            priority
+          />
 
-    </div>
+          {/* TITLE */}
+          <h1 className="text-sm sm:text-lg font-semibold whitespace-nowrap">
+            Mirchi Mart
+          </h1>
+        </div>
+
+        {/* RIGHT: LOGOUT */}
+        <button
+          onClick={handleLogout}
+          className="text-xs sm:text-sm bg-white/20 hover:bg-white/30 transition px-3 py-1.5 rounded-md"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </header>
   );
 }
